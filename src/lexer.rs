@@ -1,7 +1,7 @@
 use regex::Regex;
 
 fn subtraction(statement: String) -> String {
-    let re = Regex::new(r"(\d+\-)+\d+").unwrap();
+    let re = Regex::new(r"([0-9]*[.]?[0-9]+\-)+[0-9]*[.]?[0-9]+").unwrap();
 
     let mut evolved_statement = statement.to_string();
     loop {
@@ -13,12 +13,12 @@ fn subtraction(statement: String) -> String {
         if t1 == "" {
             break;
         }
-        let v: Vec<i32> = t1
+        let v: Vec<f32> = t1
             .split("-")
-            .map(|x| x.trim().parse::<i32>().unwrap())
+            .map(|x| x.trim().parse::<f32>().unwrap())
             .collect();
-        let rem: i32 = v[1..v.len()].iter().sum();
-        let v1: i32 = v[0] - rem;
+        let rem: f32 = v[1..v.len()].iter().sum();
+        let v1: f32 = v[0] - rem;
 
         evolved_statement = evolved_statement.replace(t1, &v1.to_string());
     }
@@ -26,7 +26,7 @@ fn subtraction(statement: String) -> String {
 }
 
 fn addition(statement: String) -> String {
-    let re = Regex::new(r"(\d+\+)+\d+").unwrap();
+    let re = Regex::new(r"([0-9]*[.]?[0-9]+\+)+[0-9]*[.]?[0-9]+").unwrap();
     let mut evolved_statement = statement.to_string();
     loop {
         let t1: &str = match re.captures(&evolved_statement) {
@@ -37,9 +37,9 @@ fn addition(statement: String) -> String {
         if t1 == "" {
             break;
         }
-        let v: i32 = t1
+        let v: f32 = t1
             .split("+")
-            .map(|x| x.trim().parse::<i32>().unwrap())
+            .map(|x| x.trim().parse::<f32>().unwrap())
             .sum();
         evolved_statement = evolved_statement.replace(t1, &v.to_string());
     }
@@ -47,7 +47,7 @@ fn addition(statement: String) -> String {
 }
 
 fn multiplication(statement: String) -> String {
-    let re = Regex::new(r"(\d+\*)+\d+").unwrap();
+    let re = Regex::new(r"([0-9]*[.]?[0-9]+\*)+[0-9]*[.]?[0-9]+").unwrap();
 
     let mut evolved_statement = statement.to_string();
     loop {
@@ -59,9 +59,9 @@ fn multiplication(statement: String) -> String {
         if t1 == "" {
             break;
         }
-        let v: i32 = t1
+        let v: f32 = t1
             .split("*")
-            .map(|x| x.trim().parse::<i32>().unwrap())
+            .map(|x| x.trim().parse::<f32>().unwrap())
             .product();
         evolved_statement = evolved_statement.replace(t1, &v.to_string());
     }
@@ -69,7 +69,7 @@ fn multiplication(statement: String) -> String {
 }
 
 fn division(statement: String) -> String {
-    let re = Regex::new(r"(\d+/)+\d+").unwrap();
+    let re = Regex::new(r"([0-9]*[.]?[0-9]+/)+[0-9]*[.]?[0-9]+").unwrap();
 
     let mut evolved_statement = statement.to_string();
     loop {
@@ -81,13 +81,13 @@ fn division(statement: String) -> String {
         if t1 == "" {
             break;
         }
-        let v: Vec<i32> = t1
+        let v: Vec<f32> = t1
             .split("/")
-            .map(|x| x.trim().parse::<i32>().unwrap())
+            .map(|x| x.trim().parse::<f32>().unwrap())
             .collect();
 
-        let rem: i32 = v[1..v.len()].iter().product();
-        let v1: i32 = v[0] / rem;
+        let rem: f32 = v[1..v.len()].iter().product();
+        let v1: f32 = v[0] / rem;
 
         evolved_statement = evolved_statement.replace(t1, &v1.to_string());
     }
