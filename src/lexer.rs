@@ -1,23 +1,7 @@
 use regex::Regex;
 
-mod lexer {
-    pub fn start() {}
-}
-
-pub enum Token {
-    ADD,
-    SUBTRACT,
-    MULTIPLY,
-    DIVIDE,
-    NUMBER,
-}
-
-fn print_type_of<T>(_: &T) {
-    println!("{}", std::any::type_name::<T>())
-}
-
-fn S3(statement: &mut str) {
-    let re = Regex::new(r"(\d+\-)+\d").unwrap();
+fn subtraction(statement: String) -> String {
+    let re = Regex::new(r"(\d+\-)+\d+").unwrap();
 
     let mut evolved_statement = statement.to_string();
     loop {
@@ -38,11 +22,11 @@ fn S3(statement: &mut str) {
 
         evolved_statement = evolved_statement.replace(t1, &v1.to_string());
     }
-    println!("sub {}: {}", statement, evolved_statement);
+    evolved_statement
 }
 
-fn S2(statement: &mut str) {
-    let re = Regex::new(r"(\d+\+)+\d").unwrap();
+fn addition(statement: String) -> String {
+    let re = Regex::new(r"(\d+\+)+\d+").unwrap();
     let mut evolved_statement = statement.to_string();
     loop {
         let t1: &str = match re.captures(&evolved_statement) {
@@ -59,11 +43,11 @@ fn S2(statement: &mut str) {
             .sum();
         evolved_statement = evolved_statement.replace(t1, &v.to_string());
     }
-    println!("add {}: {}", statement, evolved_statement);
+    evolved_statement
 }
 
-fn S1(statement: &mut str) {
-    let re = Regex::new(r"(\d+\*)+\d").unwrap();
+fn multiplication(statement: String) -> String {
+    let re = Regex::new(r"(\d+\*)+\d+").unwrap();
 
     let mut evolved_statement = statement.to_string();
     loop {
@@ -81,11 +65,11 @@ fn S1(statement: &mut str) {
             .product();
         evolved_statement = evolved_statement.replace(t1, &v.to_string());
     }
-    println!("mul {}: {}", statement, evolved_statement);
+    evolved_statement
 }
 
-fn S0(statement: &mut str) {
-    let re = Regex::new(r"(\d+/)+\d").unwrap();
+fn division(statement: String) -> String {
+    let re = Regex::new(r"(\d+/)+\d+").unwrap();
 
     let mut evolved_statement = statement.to_string();
     loop {
@@ -107,14 +91,14 @@ fn S0(statement: &mut str) {
 
         evolved_statement = evolved_statement.replace(t1, &v1.to_string());
     }
-    println!("divide {}: {}", statement, evolved_statement);
-    statement = evolved_statement;
+    evolved_statement
 }
 
-pub fn start(statement: &mut str) {
-    println!("{:?}", statement);
-    S0(statement);
-    S1(statement);
-    S2(statement);
-    S3(statement);
+pub fn start(statement: &mut str) -> String {
+    let mut val = statement.to_string();
+    val = division(val);
+    val = multiplication(val);
+    val = addition(val);
+    val = subtraction(val);
+    val
 }
